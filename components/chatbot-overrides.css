@@ -1,6 +1,37 @@
 .lara-chat{bottom:24px}
-.mah-shell:has(.mah-whatsapp) .lara-chat{bottom:96px}
-@media(max-width:520px){
+.lara-chat-panel{display:flex;flex-direction:column;max-height:min(680px,calc(100dvh - 88px));margin-bottom:12px}
+.lara-chat-header{flex:none}
+.lara-chat-body{flex:1 1 auto;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain}
+.lara-chat-form,.lara-chat-footer{flex:none}
+.lara-chat-message{margin:0 0 12px;padding:12px 13px;border-radius:12px 12px 12px 3px;background:#fff7ef;color:#403a35;white-space:normal}
+.lara-chat-message p{margin:0 0 9px}
+.lara-chat-message p:last-child{margin-bottom:0}
+.lara-chat-message ol{margin:0;padding-left:22px}
+.lara-chat-message li{padding-left:3px;margin:0 0 8px}
+.lara-chat-message li:last-child{margin-bottom:0}
+.lara-chat-message strong{font-weight:700;color:#2f2924}
+.lara-chat-message a{color:var(--mah-orange,#f56f18);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+.lara-chat-welcome{display:grid;grid-template-columns:8px 1fr;column-gap:9px}
+.lara-chat-welcome p{grid-column:2;margin:0 0 8px}
+.lara-chat-welcome p:last-child{margin-bottom:0}
+.lara-chat-welcome .lara-chat-status-dot{grid-column:1;grid-row:1 / span 2;margin-top:7px}
+.lara-chat-prompts small{display:block;width:100%;margin:2px 2px 1px;color:#8a847f;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.lara-chat-recommendations{padding-top:8px;border-top:1px solid #f1ece8}
+.lara-chat-question{margin-left:28px;border-radius:12px 12px 3px 12px;background:#f2f5f8;color:#27323d}
+.lara-chat-question p{margin:0}
+.lara-chat{right:24px;bottom:24px}
+.mah-shell:has(.lara-chat) .mah-floating-actions,
+.mah-public-site:has(.lara-chat) .mah-floating-actions,
+.mah-floating-actions.has-chatbot{bottom:86px;right:24px}
+
+.mah-shell:has(.lara-chat-open) .mah-floating-actions,
+.mah-public-site:has(.lara-chat-open) .mah-floating-actions,
+body:has(.lara-chat-open) .mah-floating-actions{opacity:0;visibility:hidden;pointer-events:none;transform:scale(0.85)}
+
+@media(max-width:760px){
   .lara-chat{right:16px;bottom:16px}
-  .mah-shell:has(.mah-whatsapp) .lara-chat{bottom:88px}
+  .lara-chat-panel{max-height:calc(100dvh - 96px)}
+  .mah-shell:has(.lara-chat) .mah-floating-actions,
+  .mah-public-site:has(.lara-chat) .mah-floating-actions,
+  .mah-floating-actions.has-chatbot{bottom:74px;right:16px}
 }

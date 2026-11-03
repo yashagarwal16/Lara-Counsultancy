@@ -2,7 +2,7 @@
 
 import { FormEvent, ReactNode, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { Check, ChevronDown, Copy, FileText, Menu, MessageCircle, Minus, Phone, Plus, ShieldCheck, UserRound, X } from "lucide-react";
+import { Check, ChevronDown, Copy, Menu, MessageCircle, Minus, Phone, Plus, ShieldCheck, UserRound, X } from "lucide-react";
 import { defaultSiteSettings, type EditableSiteSettings } from "../lib/site-settings-shared";
 import Chatbot from "./Chatbot";
 import { useSiteSettings } from "./use-site-settings";
@@ -83,7 +83,6 @@ export function MahOrderForm({ service = "Assignment help" }: { service?: string
     <div className="mah-input-grid"><label>Email<input name="email" type="email" required placeholder="you@example.com" /></label><label>Subject / course code<input name="subject" required placeholder="e.g. Business 101" /></label><label>Deadline<input name="deadline" type="date" required /></label><label>Time<select name="time" defaultValue="2"><option value="2">2:00 AM</option><option value="12">12:00 PM</option><option value="18">6:00 PM</option></select></label></div>
     <div className="mah-pages-row"><label htmlFor="mah-pages">Pages</label><div className="mah-stepper"><button type="button" aria-label="Remove one page" onClick={() => setPages((value) => Math.max(1, value - 1))}><Minus size={14} /></button><output id="mah-pages" aria-live="polite">{pages} {pages === 1 ? "page" : "pages"}</output><button type="button" aria-label="Add one page" onClick={() => setPages((value) => value + 1)}><Plus size={14} /></button></div></div>
     <label>Country / phone<input name="phone" type="tel" placeholder="+1 000 000 0000" /></label><label>Description<textarea name="description" required placeholder="Write your assignment requirements here..." /></label>
-    <label className="mah-file-row"><span>Attach a file <small>(optional)</small></span><span className="mah-file-button"><FileText size={14} /> Choose file<input name="attachment" type="file" /></span></label>
     <label className="mah-consent"><input type="checkbox" name="consent" required /> <span>I accept the T&amp;C and agree to receive offers &amp; updates.</span></label><button className="mah-submit" type="submit" disabled={busy}>{busy ? "Sending..." : "Do My Assignment"} <span>→</span></button>
   </form>{status && <p className="mah-form-status" role="status">{status}</p>}<p className="mah-order-note">Your details are private and secure. No payment is taken here.</p></section>;
 }

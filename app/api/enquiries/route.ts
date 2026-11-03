@@ -36,7 +36,11 @@ export async function POST(request: Request) {
       subject: typeof input.subject === "string" ? input.subject : undefined,
       deadline: typeof input.deadline === "string" ? input.deadline : undefined,
       pages: typeof input.pages === "number" ? input.pages : Number(input.pages) || undefined,
-      description: typeof input.description === "string" ? input.description : undefined,
+      description: typeof input.description === "string"
+        ? input.description
+        : typeof input.message === "string"
+          ? input.message
+          : undefined,
       source: typeof input.source === "string" ? input.source : "website",
     });
   } catch (error) {
