@@ -24,7 +24,16 @@ export function sameOrigin(request: Request) {
   const origin = request.headers.get("origin");
   if (!origin) return true;
   try {
-    return origin === new URL(request.url).origin;
+    const requestUrl = new URL(request.url);
+    const forwardedHost = request.headers.get("x-forwarded-host");
+    const forwardedProto = request.headers.get("x-forwarded-proto");
+    const forwardedOrigin = forwardedHost
+      ? `${forwardedProto || requestUrl.protocol.replace(":", "")}://${forwardedHost.split(",")[0].trim()}`
+      : requestUrl.origin;
+    const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL
+      ? new URL(process.env.NEXT_PUBLIC_SITE_URL).origin
+      : "";
+    return [requestUrl.origin, forwardedOrigin, configuredOrigin].includes(origin);
   } catch {
     return false;
   }

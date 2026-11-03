@@ -18,7 +18,10 @@ export default function DashboardClient({ enquiries, settings: initialSettings, 
   const [settings, setSettings] = useState(initialSettings);
   const [settingsStatus, setSettingsStatus] = useState("");
   const [formVersion, setFormVersion] = useState(0);
-  async function logout() { await fetch("/api/auth/logout", { method: "POST" }); window.location.href = "/dashboard/login"; }
+  async function logout() {
+    await fetch("/api/auth/logout", { method: "POST", cache: "no-store" });
+    window.location.replace("/dashboard/login");
+  }
   async function saveSettings(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSettingsStatus("Saving settings...");
