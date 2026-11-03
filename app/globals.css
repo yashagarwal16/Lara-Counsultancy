@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+:root { --paper: #f3f1eb; --ink: #171914; --muted: #70736b; --line: rgba(23,25,20,.16); --lime: #d7f16b; --violet: #c7b9ff; --orange: #ffb468; --white: #fbfaf6; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'DM Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }

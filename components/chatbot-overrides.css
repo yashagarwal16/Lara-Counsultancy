@@ -1,0 +1,6 @@
+.lara-chat{bottom:24px}
+.mah-shell:has(.mah-whatsapp) .lara-chat{bottom:96px}
+@media(max-width:520px){
+  .lara-chat{right:16px;bottom:16px}
+  .mah-shell:has(.mah-whatsapp) .lara-chat{bottom:88px}
+}
