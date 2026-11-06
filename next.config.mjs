@@ -1,7 +1,8 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  // Produce a self-contained server bundle for AWS container services.
-  output: "standalone",
+  // Amplify deploys the standard .next output. Container builds opt into the
+  // smaller standalone bundle through DEPLOY_TARGET=container.
+  ...(process.env.DEPLOY_TARGET === "container" ? { output: "standalone" } : {}),
   async headers() {
     return [
       {

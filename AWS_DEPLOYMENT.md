@@ -2,26 +2,29 @@
 
 This app is a Next.js server application. It needs a Node.js server because it
 uses API routes, MongoDB, authentication, email notifications, and the chatbot.
-The included Dockerfile packages the app for AWS App Runner or ECS/Fargate.
+The primary deployment target is AWS Amplify Hosting. The repository includes
+`amplify.yml` with the required Node.js 22 build and `.next` artifact settings.
 
-## Recommended path: AWS App Runner from an ECR image
+## Recommended path: AWS Amplify Hosting
 
-1. Create an Amazon ECR private repository, for example `lara-consultancy`.
-2. Build and push the image from a machine with Docker and AWS credentials:
+1. Connect the Git repository in Amplify Hosting and select the branch to deploy.
+2. Use the build settings committed in `amplify.yml`.
+3. In Amplify environment variables, add the variables listed in `.env.example`.
+   Keep credentials in Amplify secrets/environment variables; do not upload
+   `.env.local` or commit any secret.
+4. Set `NEXT_PUBLIC_SITE_URL` to the final Amplify HTTPS URL (or custom domain)
+   before the build. This is required because metadata, sitemap, and robots are
+   generated during the build.
+5. The committed `amplify.yml` copies the configured server variables into
+   `.env.production` before the Next.js build, which makes them available to
+   Amplify's SSR runtime. Do not print this file in build logs.
+6. Ensure the MongoDB Atlas network access configuration allows the Amplify
+   server runtime to connect.
 
-   ```powershell
-   aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <account>.dkr.ecr.<region>.amazonaws.com
-   docker build -t lara-consultancy .
-   docker tag lara-consultancy:latest <account>.dkr.ecr.<region>.amazonaws.com/lara-consultancy:latest
-   docker push <account>.dkr.ecr.<region>.amazonaws.com/lara-consultancy:latest
-   ```
+## Alternative path: App Runner or ECS/Fargate
 
-3. In AWS App Runner, create a service from the ECR image.
-   Use port `3000`, and set the health check path to `/`.
-4. Add the variables listed in `.env.example` under App Runner environment
-   variables and secrets. Do not upload `.env.local` or commit any secret.
-5. Set `NEXT_PUBLIC_SITE_URL` to the final HTTPS App Runner URL (or custom
-   domain), then redeploy so metadata and the sitemap use the public URL.
+The included `Dockerfile` remains available for container deployment. It uses
+Next.js standalone output only when the container configuration enables it.
 
 ## Required production variables
 
@@ -34,9 +37,8 @@ enable WhatsApp notifications.
 
 ## Notes
 
-- Allow the App Runner outbound IP range in MongoDB Atlas, or configure Atlas
+- Allow the Amplify server runtime to reach MongoDB Atlas, or configure Atlas
   network access appropriately for the deployment.
 - Use Node.js 22 or newer in the build environment.
-- AWS Amplify Hosting's current managed Next.js SSR documentation supports up
-  through Next.js 15; this project uses Next.js 16, so the container path avoids
-  that version mismatch.
+- Amplify Hosting's managed Next.js SSR support is aligned with the Next.js 15
+  release line used by this project.
