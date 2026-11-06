@@ -220,6 +220,7 @@
   padding: 28px;
   border: 1px solid var(--mah-line);
   border-radius: 10px;
+  background: #fff;
   box-shadow: 0 18px 40px rgba(44, 44, 44, .08);
 }
 .mah-contact-form label {
@@ -245,7 +246,57 @@
   border-color: var(--mah-orange);
   box-shadow: 0 0 0 3px rgba(245, 111, 24, .1);
 }
-.mah-form-status { margin: 0; color: #66822b; font-size: 10px; line-height: 1.5; }
+.mah-contact-form .mah-submit,
+.mah-contact-form button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--mah-orange, #b58a4a) !important;
+  color: #fff !important;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(181, 138, 74, 0.25);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.mah-contact-form .mah-submit:hover:not(:disabled),
+.mah-contact-form button[type="submit"]:hover:not(:disabled) {
+  background: var(--mah-orange-dark, #8f6936) !important;
+  transform: translateY(-1px);
+}
+.mah-contact-form .mah-submit:disabled,
+.mah-contact-form button[type="submit"]:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+.mah-contact-form .mah-submit span {
+  font-size: 18px;
+  line-height: 0;
+}
+.mah-form-status {
+  margin: 4px 0 0;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #f4faef;
+  border: 1px solid #dfe9db;
+  color: #3b7c2a;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+}
+.mah-form-status.is-error {
+  background: #fff1f0;
+  border-color: #ffd4d1;
+  color: #c92a2a;
+}
 
 .mah-legal-note { padding-top: 0; color: #777; font-size: 12px; line-height: 1.75; }
 

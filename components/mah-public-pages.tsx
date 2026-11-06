@@ -380,23 +380,26 @@ export function MahContactPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     setBusy(true);
     setStatus("Sending...");
     try {
-      const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": submissionKey.current }, body: JSON.stringify({ ...Object.fromEntries(new FormData(event.currentTarget)), type: "contact", source: "contact-page" }) });
+      const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": submissionKey.current }, body: JSON.stringify({ ...Object.fromEntries(formData), type: "contact", source: "contact-page" }) });
       const data = await response.json().catch(() => ({}));
       setSubmitted(response.ok);
       setStatus(response.ok ? "Enquiry received. We will contact you shortly." : data.error || "We could not send this enquiry. Please try again.");
       if (response.ok) {
-        event.currentTarget.reset();
+        form.reset();
         submissionKey.current = crypto.randomUUID();
       }
     } catch (error) {
       console.error("Contact enquiry failed:", error);
       setSubmitted(false);
       setStatus("We could not connect. Please check your connection and try again.");
+    } finally {
+      setBusy(false);
     }
-    setBusy(false);
   }
 
   return (
@@ -436,8 +439,13 @@ export function MahContactPage() {
               <input name="consent" type="checkbox" required />
               <span>I agree that Lara Consultancy may use these details to respond to my enquiry.</span>
             </label>
-            <button className="mah-submit" type="submit" disabled={busy}>{busy ? "Sending..." : "Send enquiry"} <span>→</span></button>
-            {status && <p className="mah-form-status" role="status">{status}</p>}
+            <button className="mah-submit" type="submit" disabled={busy}>{busy ? "Sending..." : "Submit Enquiry"} <span>→</span></button>
+            {status && (
+              <p className={`mah-form-status ${submitted ? "is-success" : "is-error"}`} role="status">
+                {submitted && <Check size={15} aria-hidden="true" style={{ display: "inline-block", verticalAlign: "middle", marginRight: 6 }} />}
+                {status}
+              </p>
+            )}
           </form>
         </section>
 

@@ -1,5 +1,7 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+  // Produce a self-contained server bundle for AWS container services.
+  output: "standalone",
   async headers() {
     return [
       {

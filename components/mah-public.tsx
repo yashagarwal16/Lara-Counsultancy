@@ -62,21 +62,24 @@ export function MahOrderForm({ service = "Assignment help" }: { service?: string
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (busy) return;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     setBusy(true);
     setStatus("Sending...");
     try {
-      const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": submissionKey.current }, body: JSON.stringify({ ...Object.fromEntries(new FormData(event.currentTarget)), type: "order", service, pages, source: "order-form" }) });
+      const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": submissionKey.current }, body: JSON.stringify({ ...Object.fromEntries(formData), type: "order", service, pages, source: "order-form" }) });
       const data = await response.json().catch(() => ({}));
       setStatus(response.ok ? "Enquiry received. We will contact you shortly." : data.error || "We could not send this enquiry. Please try again.");
       if (response.ok) {
-        event.currentTarget.reset();
+        form.reset();
         submissionKey.current = crypto.randomUUID();
       }
     } catch (error) {
       console.error("Order enquiry failed:", error);
       setStatus("We could not connect. Please check your connection and try again.");
+    } finally {
+      setBusy(false);
     }
-    setBusy(false);
   }
   return <section className="mah-order-card" aria-labelledby="mah-order-title"><div className="mah-order-heading"><div><p className="mah-kicker">Start your order</p><h2 id="mah-order-title">Human-led academic support</h2></div><span className="mah-safe-badge"><ShieldCheck size={14} /> Private enquiry</span></div><p className="mah-order-intro">Tell us about your {service.toLowerCase()} requirements and get practical support from a subject specialist.</p><form onSubmit={submit}>
     <div className="mah-mode-row" role="radiogroup" aria-label="Assignment type"><label><input type="radio" name="assignmentType" value="Writing" defaultChecked /> Writing</label><label><input type="radio" name="assignmentType" value="Technical" /> Technical</label><label><input type="radio" name="assignmentType" value="Online Class" /> Online Class</label></div>

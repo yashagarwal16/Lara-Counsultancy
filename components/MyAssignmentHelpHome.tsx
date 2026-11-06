@@ -155,19 +155,22 @@ export default function MyAssignmentHelpHome() {
   async function preventSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (formBusy) return;
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     setFormBusy(true);
     setFormStatus("Sending...");
     try {
-      const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": submissionKey.current }, body: JSON.stringify({ ...Object.fromEntries(new FormData(event.currentTarget)), type: "order", source: "homepage-form", pages }) });
+      const response = await fetch("/api/enquiries", { method: "POST", headers: { "Content-Type": "application/json", "Idempotency-Key": submissionKey.current }, body: JSON.stringify({ ...Object.fromEntries(formData), type: "order", source: "homepage-form", pages }) });
       const data = await response.json().catch(() => ({}));
       setFormStatus(response.ok ? "Enquiry received. We will contact you shortly." : data.error || "We could not send this enquiry. Please try again.");
       if (response.ok) {
-        event.currentTarget.reset();
+        form.reset();
         submissionKey.current = crypto.randomUUID();
       }
     } catch (error) {
       console.error("Homepage enquiry failed:", error);
       setFormStatus("We could not connect. Please check your connection and try again.");
+    } finally {
       setFormBusy(false);
     }
   }
